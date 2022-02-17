@@ -1,0 +1,114 @@
+getgenv().Prefix = ":"
+
+getgenv().Operator = 
+{
+243756256, 
+2828887010,
+666447670,
+903327775,
+2003508283,
+}
+getgenv().Droppers = game.Players.LocalPlayer
+
+local player = game.Players.LocalPlayer
+
+player.Idled:Connect(function()
+    game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),game.Workspace.CurrentCamera.CFrame)
+    wait(1)
+    game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),game.Workspace.CurrentCamera.CFrame)
+end)
+
+local origin_spot
+local adver_msg
+local hidden_origin_spot
+
+local dropping = false
+local blocking = false
+local advert = false
+
+local function main_cmds(msg,plr)
+    if isaopeartor == false or table.find(Operator,plr) then
+        local operator = game.Players:GetPlayerByUserId(plr)
+        msg = string.lower(msg)
+        cmd = string.split(msg," ")
+        if cmd[2] and cmd[1] then
+            if cmd[1] == Prefix.."setup" then
+                local places = {"admin"}
+                if table.find(places,cmd[2]) then
+                    local success, err = pcall(function()
+                        if cmd[2] == 'admin' then
+                            local pos = {
+                                a1 = "-871,-39,-589",
+                                a2 = "-871,-39,-619",
+                                a3 = "-906,-40,-620",
+                                a4 = "-907,-39,-590",
+                                a5 = "-908,-40,-561",
+                                a6 = "-873,-39,-559",
+                                a7 = "-837,-40,-559",
+                                a8 = "-836,-39,-590",
+                                a9 = "-837,-40,-619",
+                                a10 = "-856,-39,-606",
+                                a11 = "-871,-39,-606",
+                                a12 = "-887,-39,-606",
+                                a13 = "-887,-39,-590",
+                                a14 = "-886,-39,-573",
+                                a15 = "-872,-39,-574",
+                                a16 = "-857,-39,-574",
+                                a17 = "-856,-39,-588",
+                                a18 = "-820,-40,-629",
+                                a19 = "-922,-40,-629",
+                                a20 = "-924,-40,-550",
+                                a21 = "-821,-40,-549",
+                                a22 = "-864,-39,-580",
+                                a23 = "-864,-39,-580",
+                                a24 = "-881,-39,-580",
+                                a25 = "-881,-39,-600",
+                                a26 = "-864,-39,-600",
+                            }
+                            local cnt = 0
+                            for i,v in pairs(Droppers) do
+                                if game.Players:GetPlayerByUserId(v) then
+                                    cnt = cnt + 1
+                                    local new_pos = pos['a'..cnt]
+                                    local split_cframe = string.split(new_pos,",")
+                                    local x,y,z = split_cframe[1],split_cframe[2],split_cframe[3]
+                                    game.Players:GetPlayerByUserId(v).Character.HumanoidRootPart.CFrame = CFrame.new(x,y,z)
+                                end
+                            end
+                            if game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored == true then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+                            end
+                            local HumanoidRootPart_ = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(HumanoidRootPart_.X,HumanoidRootPart_.Y+7,HumanoidRootPart_.Z)
+                            wait()
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+                        end
+                    end)
+                    if err then print(err) end
+                end
+            elseif cmd[1] == Prefix.."rban" then
+                if cmd[2] == "." then
+                    game.ReplicatedStorage.MainEvent:FireServer("BreathingHAMON")
+                elseif (string.sub(string.lower(player.Name),1,string.len(cmd[2]))) == string.lower(cmd[2]) then
+                    game.ReplicatedStorage.MainEvent:FireServer("BreathingHAMON")
+                end
+            end
+        end
+    end
+end
+
+for i,v in pairs(game.Players:GetChildren()) do
+    if table.find(Operator,v.UserId) then
+        v.Chatted:Connect(function(msg)
+            main_cmds(msg,v.UserId)
+        end)
+    end
+end
+
+game.Players.PlayerAdded:Connect(function(plr)
+    if table.find(Operator,plr.UserId) then
+        plr.Chatted:Connect(function(msg)
+            main_cmds(msg,plr.UserId)
+        end)
+    end
+end)
