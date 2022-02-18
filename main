@@ -88,8 +88,10 @@ local function main_cmds(msg,plr)
                 end
             elseif cmd[1] == Prefix.."rban" then
                 if cmd[2] == "." then
+                    if not Operator then
                     game.ReplicatedStorage.MainEvent:FireServer("BreathingHAMON")
                 elseif (string.sub(string.lower(player.Name),1,string.len(cmd[2]))) == string.lower(cmd[2]) then
+                    if not Operator then
                     game.ReplicatedStorage.MainEvent:FireServer("BreathingHAMON")
                 end
             end
